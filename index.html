@@ -1,0 +1,242 @@
+<title>Vendora Monthly Goal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a small mock of the seller home screen inside a frame, with a four-step walkthrough bar above it. */
+:root{
+  --bg:#F3F6F6; --surface:#FFFFFF; --ink:#13201F; --ink2:#546563; --line:#DCE4E3;
+  --accent:#0F6F66; --accent-soft:#DDF1EE; --on-accent:#FFFFFF;
+  --warn:#9A4A06; --warn-soft:#FCEBD6; --good:#17693A; --good-soft:#DDF2E3;
+  --track:#E4EBEA;
+  --font:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif; --mono:'DM Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1514; --surface:#141F1E; --ink:#E6F0EF; --ink2:#93A7A5; --line:#273736;
+  --accent:#4FC4B7; --accent-soft:#12302D; --on-accent:#062421;
+  --warn:#F0B26B; --warn-soft:#3A2A14; --good:#74D69A; --good-soft:#143324; --track:#243332; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1514; --surface:#141F1E; --ink:#E6F0EF; --ink2:#93A7A5; --line:#273736;
+  --accent:#4FC4B7; --accent-soft:#12302D; --on-accent:#062421;
+  --warn:#F0B26B; --warn-soft:#3A2A14; --good:#74D69A; --good-soft:#143324; --track:#243332; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5;
+  padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3,p{margin:0}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px}
+.top h1{font-size:22px;font-weight:700;letter-spacing:-.01em}
+.top p{color:var(--ink2);font-size:13px;max-width:62ch}
+.steps{display:flex;flex-wrap:wrap;gap:8px}
+.step{font:inherit;font-size:13px;font-weight:500;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.step[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.step:focus-visible,.btn:focus-visible,input:focus-visible,.link:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.note{font-size:13px;color:var(--ink2);background:var(--surface);border:1px dashed var(--line);border-radius:8px;padding:10px 14px}
+.note b{color:var(--ink)}
+.frame{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 20px;padding:12px 20px;border-bottom:1px solid var(--line)}
+.logo{font-weight:700;letter-spacing:-.02em;margin-right:8px}
+.nav{display:flex;gap:16px;font-size:13px;color:var(--ink2);flex-wrap:wrap}
+.nav .on{color:var(--ink);font-weight:700}
+.store{margin-left:auto;font-size:12px;color:var(--ink2)}
+.body{padding:24px 20px;display:flex;flex-direction:column;gap:20px;background:var(--bg)}
+.hello{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:baseline}
+.hello h2{font-size:20px;font-weight:700}
+.hello span{font-size:13px;color:var(--ink2)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.card h3{font-size:16px;font-weight:700}
+.sub{color:var(--ink2);font-size:14px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{font:inherit;font-size:14px;font-weight:500;padding:9px 16px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.sm{font-size:13px;padding:6px 12px}
+.link{background:none;border:0;padding:0;font:inherit;font-size:13px;color:var(--accent);cursor:pointer;text-decoration:underline}
+.money{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;padding:0 12px;background:var(--bg);gap:6px}
+.money span{font-family:var(--mono);color:var(--ink2)}
+.money input{font-family:var(--mono);font-size:18px;font-weight:500;border:0;background:none;color:var(--ink);padding:9px 0;width:9ch}
+.pill{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.02em}
+.pill.behind{background:var(--warn-soft);color:var(--warn)}
+.pill.track{background:var(--accent-soft);color:var(--accent)}
+.pill.ahead{background:var(--good-soft);color:var(--good)}
+.big{font-family:var(--mono);font-size:34px;font-weight:500;letter-spacing:-.02em;line-height:1.1}
+.big small{font-family:var(--font);font-size:13px;color:var(--ink2);letter-spacing:0;margin-left:8px}
+.meter{position:relative;height:14px;border-radius:7px;background:var(--track);margin:26px 0 30px}
+.fill{position:absolute;inset:0 auto 0 0;border-radius:7px;background:var(--accent)}
+.mk{position:absolute;top:-6px;bottom:-6px;width:0;border-left:2px solid var(--ink)}
+.mk.proj{border-left:2px dashed var(--warn)}
+.mk i{position:absolute;top:-20px;left:0;transform:translateX(-50%);font-style:normal;font-size:11px;white-space:nowrap;color:var(--ink2)}
+.mk.proj i{top:auto;bottom:-20px;color:var(--warn)}
+.mk.proj.r i{left:4px;transform:translateX(-100%)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.fact{font-size:13px;color:var(--ink2)}
+.fact b{display:block;font-family:var(--mono);font-size:16px;font-weight:500;color:var(--ink)}
+.acts{display:flex;flex-direction:column;gap:0}
+.act{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:14px 0;border-top:1px solid var(--line)}
+.act:first-child{border-top:0;padding-top:4px}
+.act .t{flex:1 1 280px;min-width:0}
+.act .t b{display:block;font-weight:500}
+.act .t span{font-size:13px;color:var(--ink2)}
+.est{font-family:var(--mono);font-size:13px;color:var(--good);white-space:nowrap}
+.done{font-size:13px;color:var(--good);font-weight:700}
+.two{display:grid;grid-template-columns:2fr 1fr;gap:20px}
+.mini{display:flex;flex-direction:column;gap:12px}
+.mini .m{display:flex;justify-content:space-between;font-size:14px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.mini .m span{color:var(--ink2)}
+.mini .m b{font-family:var(--mono);font-weight:500}
+@media (max-width:760px){.two{grid-template-columns:1fr}.store{margin-left:0}.big{font-size:28px}.mk i{font-size:10px}}
+.mail{max-width:560px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.mail .h{padding:12px 20px;border-bottom:1px solid var(--line);font-size:13px;color:var(--ink2);display:flex;flex-direction:column;gap:2px}
+.mail .h b{color:var(--ink);font-weight:500}
+.mail .c{padding:20px;display:flex;flex-direction:column;gap:14px}
+.mail .first{font-size:17px;font-weight:700}
+.mail ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{border:1px solid var(--line);border-radius:8px;padding:12px;font-size:13px;color:var(--ink2)}
+.stat b{display:block;font-family:var(--mono);font-size:18px;font-weight:500;color:var(--ink)}
+@media (prefers-reduced-motion:no-preference){.fill{transition:width .4s}.mk{transition:left .4s}}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>Monthly Goal, clickable prototype</h1>
+      <p>Part 2 of the Vendora assignment. Walk the four steps in order, or jump around. Everything on screen is example data for a made-up store.</p>
+    </div>
+    <nav class="steps" id="steps" aria-label="Prototype steps"></nav>
+  </div>
+  <div class="note" id="hint"></div>
+  <div class="frame">
+    <div class="bar">
+      <span class="logo">Vendora</span>
+      <span class="nav"><span class="on">Home</span><span>Orders</span><span>Products</span><span>Marketing</span><span>Analytics</span></span>
+      <span class="store">Rohan's Threads (example store)</span>
+    </div>
+    <div class="body" id="screen"></div>
+  </div>
+</div>
+
+<script>
+var DAY=17, DAYS=31, REV=58000, SUGGEST=120000;
+var SC={behind:{d:17,r:58000},ahead:{d:17,r:74000},newstore:{d:12,r:0}};
+var S={scn:'behind', step:1, goal:null, draft:SUGGEST, dismissed:false, editing:false, planned:{}, snoozed:{}};
+var ACTS=[
+ {id:'stock',t:'Restock the Linen Overshirt',w:'3 left and it sells about 1 a day, so it runs out in 3 days. Rule: bestseller below 5 days of stock.',e:6000},
+ {id:'chan',t:'Post twice this week on Instagram',w:'Instagram brought 41% of your orders in the last 30 days, the most of any channel.',e:5200},
+ {id:'offer',t:'Offer 10% off 12 slow products this weekend',w:'These 12 products had views but no sales in 3 weeks. A short offer clears them.',e:3800}
+];
+var HINTS={
+ 1:'<b>Step 1, first login after launch.</b> The home screen suggests a goal from the last 3 months. Change the number, then press Use this goal.',
+ 2:'<b>Step 2, the pace card.</b> It leads the home screen. Mark an action as planned or snooze it and watch the numbers change. Edit the goal to see the status flip. The example store buttons show an ahead-of-pace store and a new store.',
+ 3:'<b>Step 3, the Monday email.</b> The pace line comes first, then the same actions. No push notification is sent about pace.',
+ 4:'<b>Step 4, month-end recap.</b> A short summary of last month and a suggested goal for the next one.'
+};
+function inr(n){return '₹'+Math.round(n).toLocaleString('en-IN')}
+function calc(g){var exp=g*DAY/DAYS, diff=(REV-exp)/exp, proj=REV/DAY*DAYS;
+  var st=diff>=0.03?'ahead':(diff>-0.05?'track':'behind');
+  return {exp:exp,diff:diff,proj:proj,gap:g-proj,st:st}}
+function planSum(){var s=0;ACTS.forEach(function(a){if(S.planned[a.id])s+=a.e});return s}
+function applyScn(k){S.scn=k;DAY=SC[k].d;REV=SC[k].r;S.planned={};S.snoozed={};S.goal=(k==='newstore'?null:SUGGEST);S.draft=SUGGEST;S.dismissed=false;S.editing=false}
+function setStep(n){
+  if((n===3||n===4)&&S.scn==='newstore'){applyScn('behind')}
+  S.step=n;
+  if(n===1){S.goal=null;S.dismissed=false;S.editing=false}
+  if(n!==1&&S.goal===null){S.goal=S.draft>0?S.draft:SUGGEST}
+  render()}
+function esc(x){return String(x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function actionsHtml(c){
+  var vis=ACTS.filter(function(a){return !S.snoozed[a.id]});
+  if(!vis.length)return '<p class="sub">No actions right now. Snoozed tips return next week.</p>';
+  return '<div class="acts">'+vis.map(function(a){
+    var p=S.planned[a.id];
+    return '<div class="act"><div class="t"><b>'+esc(a.t)+'</b><span>'+esc(a.w)+'</span></div>'+
+     '<span class="est">could add about '+inr(a.e)+'</span>'+
+     (p?'<span class="done">Planned</span><button class="link" data-a="unplan" data-id="'+a.id+'">Undo</button>'
+       :'<button class="btn sm pri" data-a="plan" data-id="'+a.id+'">Plan this</button>')+
+     '<button class="link" data-a="snooze" data-id="'+a.id+'">Snooze</button></div>'}).join('')+'</div>'}
+function paceCard(){
+  var g=S.goal, c=calc(g), pct=Math.min(100,REV/g*100), e=Math.min(100,c.exp/g*100), p=Math.min(100,c.proj/g*100);
+  var label=c.st==='behind'?'Behind pace':(c.st==='ahead'?'Ahead of pace':'On track');
+  var sev=Math.abs(Math.round(c.diff*100));
+  var head=c.st==='behind'?sev+'% behind pace':(c.st==='ahead'?sev+'% ahead of pace':'On track');
+  var shortTxt=c.gap>0?inr(c.gap)+' short of your goal':inr(-c.gap)+' above your goal';
+  var ps=planSum(), withPlan=c.proj+ps;
+  var edit=S.editing?
+   '<div class="row"><label class="money" for="gedit"><span>₹</span><input id="gedit" inputmode="numeric" value="'+g+'"></label><button class="btn sm pri" data-a="savegoal">Save</button><button class="link" data-a="cancel">Cancel</button></div>':
+   '<button class="link" data-a="edit">Edit goal</button>';
+  var action=c.gap>0&&c.st!=='ahead'?
+   '<div class="card" style="border:0;padding:0"><h3>What could close the gap</h3>'+actionsHtml(c)+'</div>':
+   '<p class="sub">Nothing to fix this month. Keep going and the Monday email will say if that changes.</p>';
+  return '<div class="card"><div class="row" style="justify-content:space-between"><div class="row"><span class="pill '+c.st+'">'+label+'</span><h3>October goal '+inr(g)+'</h3></div>'+edit+'</div>'+
+   '<div class="big">'+inr(REV)+'<small>so far, day '+DAY+' of '+DAYS+'</small></div>'+
+   '<div class="meter" aria-label="Progress toward goal"><div class="fill" style="width:'+pct+'%"></div>'+
+     '<div class="mk" style="left:'+e+'%"><i>Should be here today</i></div>'+
+     '<div class="mk proj'+(p>70?' r':'')+'" style="left:'+p+'%"><i>Projected month end</i></div></div>'+
+   '<div class="facts"><div class="fact">Where you should be today<b>'+inr(c.exp)+'</b></div>'+
+     '<div class="fact">At this rate you finish at<b>'+inr(c.proj)+'</b>'+shortTxt+'</div>'+
+     (ps>0?'<div class="fact">With your planned actions<b>about '+inr(withPlan)+'</b>'+(withPlan>=g?'That reaches your goal':inr(g-withPlan)+' still to find')+'</div>':'')+'</div>'+
+   '<p class="sub"><b style="color:var(--ink)">'+head+'.</b> Pace is revenue so far divided by days passed, projected across the month.</p>'+
+   action+'</div>'}
+function suggestCard(){
+  if(S.dismissed)return '<div class="card"><div class="row" style="justify-content:space-between"><div><h3>No goal set for October</h3><p class="sub">A goal tells you whether your numbers are good.</p></div><button class="btn pri" data-a="reopen">Set a goal</button></div></div>';
+  return '<div class="card"><h3>Set a goal for October</h3>'+
+   '<p class="sub">Your last 3 months averaged '+inr(110000)+' (July '+inr(102000)+', August '+inr(112000)+', September '+inr(116000)+'). We suggest a goal about 10% higher. Change it to whatever feels right.</p>'+
+   '<div class="row"><label class="money" for="gdraft"><span>₹</span><input id="gdraft" inputmode="numeric" value="'+S.draft+'" aria-label="Monthly revenue goal"></label>'+
+   '<button class="btn pri" data-a="accept">Use this goal</button><button class="btn" data-a="dismiss">Not now</button></div>'+
+   '<p class="sub" style="font-size:12px">You can change this any time. We never change it for you.</p></div>'}
+function side(){
+  return '<div class="card"><h3>Today</h3><div class="mini"><div class="m"><span>Orders</span><b>14</b></div><div class="m"><span>To ship</span><b>6</b></div><div class="m"><span>Low stock</span><b>1 item</b></div></div><button class="link" style="align-self:flex-start">See all metrics</button></div>'}
+function scnBar(){
+  var o=[['behind','Behind pace'],['ahead','Ahead of pace'],['newstore','New store, 12 days']];
+  return '<div class="row" role="group" aria-label="Example store"><span class="sub">Example store:</span>'+o.map(function(x){return '<button class="step" data-scn="'+x[0]+'"'+(S.scn===x[0]?' aria-current="true"':'')+'>'+x[1]+'</button>'}).join('')+'</div>'}
+function newCard(){
+  return '<div class="card"><div class="row"><span class="pill track">Not yet</span><h3>Your goal opens after 30 days of sales</h3></div><p class="sub">Your store is 12 days old. Goals work from your own sales history, so a suggestion made now would be a guess. We will suggest a goal on day 30. Until then, the home screen shows your setup steps and what is selling.</p><div class="meter" style="margin:12px 0 4px"><div class="fill" style="width:40%"></div></div><p class="sub" style="font-size:12px">Day 12 of 30</p></div>'}
+function home(){
+  var main=S.scn==='newstore'?newCard():((S.goal===null)?suggestCard():paceCard());
+  return scnBar()+'<div class="hello"><h2>Good morning, Rohan</h2><span>Saturday 17 October</span></div><div class="two">'+main+side()+'</div>'}
+function email(){
+  var g=S.goal, c=calc(g);
+  var first=c.st==='behind'?'You are '+Math.abs(Math.round(c.diff*100))+'% behind pace for October.':(c.st==='ahead'?'You are ahead of pace for October.':'You are on track for October.');
+  var sub=c.gap>0?'At this rate you finish about '+inr(c.gap)+' short of your '+inr(g)+' goal.':'At this rate you finish above your '+inr(g)+' goal.';
+  var vis=ACTS.filter(function(a){return !S.snoozed[a.id]});
+  return '<div class="mail"><div class="h"><span>From: Vendora</span><span>To: rohan@example.com</span><b>Your week at Rohan\'s Threads: '+(c.st==='behind'?'a gap you can close':'on pace')+'</b></div>'+
+   '<div class="c"><p class="first">'+esc(first)+'</p><p class="sub">'+esc(sub)+' Revenue so far is '+inr(REV)+' after '+DAY+' of '+DAYS+' days.</p>'+
+   (c.gap>0?'<div><b>Three things to do this week</b><ol>'+vis.map(function(a){return '<li>'+esc(a.t)+' <span class="est">(about '+inr(a.e)+')</span></li>'}).join('')+'</ol></div>':'')+
+   '<div class="row"><span class="btn pri" style="text-decoration:none">Open your dashboard</span></div>'+
+   '<p class="sub" style="font-size:12px">Weekly summary, sent Mondays. Change the day or turn it off in settings.</p></div></div>'}
+function recap(){
+  var next=SUGGEST;
+  return '<div class="hello"><h2>September recap</h2><span>Shown on 1 October</span></div><div class="card">'+
+   '<div class="row"><span class="pill ahead">Goal reached</span><h3>You made '+inr(116000)+' against a goal of '+inr(110000)+'</h3></div>'+
+   '<div class="stats"><div class="stat">Goal<b>'+inr(110000)+'</b></div><div class="stat">Result<b>'+inr(116000)+'</b></div><div class="stat">Against goal<b>105%</b></div><div class="stat">Best week<b>Week 3</b></div></div>'+
+   '<p class="sub">What helped most: Instagram posts and the weekend offer on 21 September.</p>'+
+   '<div class="row" style="border-top:1px solid var(--line);padding-top:14px"><div style="flex:1 1 260px"><h3>Next month</h3><p class="sub">We suggest '+inr(next)+', about 10% above your last 3 months.</p></div>'+
+   '<label class="money" for="gnext"><span>₹</span><input id="gnext" inputmode="numeric" value="'+next+'"></label><button class="btn pri" data-a="nextgoal">Set October goal</button></div></div>'}
+function render(){
+  var names=['1 Set a goal','2 On pace?','3 Monday email','4 Month-end recap'];
+  document.getElementById('steps').innerHTML=names.map(function(n,i){return '<button class="step" data-step="'+(i+1)+'"'+(S.step===i+1?' aria-current="true"':'')+'>'+n+'</button>'}).join('');
+  document.getElementById('hint').innerHTML=HINTS[S.step];
+  var h=S.step===1?home():S.step===2?home():S.step===3?email():recap();
+  document.getElementById('screen').innerHTML=h}
+function num(id){var el=document.getElementById(id);var v=parseInt(String(el&&el.value).replace(/[^0-9]/g,''),10);return isNaN(v)||v<1000?null:v}
+document.addEventListener('click',function(ev){
+  var b=ev.target.closest('[data-step],[data-a],[data-scn]'); if(!b)return;
+  if(b.dataset.scn){applyScn(b.dataset.scn);S.step=2;render();return}
+  if(b.dataset.step){setStep(parseInt(b.dataset.step,10));return}
+  var a=b.dataset.a,id=b.dataset.id;
+  if(a==='accept'){var v=num('gdraft');if(v===null){return}S.goal=v;S.draft=v;S.step=2;render()}
+  else if(a==='dismiss'){S.dismissed=true;render()}
+  else if(a==='reopen'){S.dismissed=false;render()}
+  else if(a==='edit'){S.editing=true;render()}
+  else if(a==='cancel'){S.editing=false;render()}
+  else if(a==='savegoal'){var w=num('gedit');if(w!==null){S.goal=w;S.draft=w}S.editing=false;render()}
+  else if(a==='plan'){S.planned[id]=true;render()}
+  else if(a==='unplan'){delete S.planned[id];render()}
+  else if(a==='snooze'){S.snoozed[id]=true;delete S.planned[id];render()}
+  else if(a==='nextgoal'){var n=num('gnext');if(n!==null){S.goal=n;S.draft=n}S.step=2;render()}
+});
+document.addEventListener('keydown',function(ev){
+  if(ev.key!=='Enter')return;
+  if(ev.target.id==='gdraft'){document.querySelector('[data-a="accept"]').click()}
+  else if(ev.target.id==='gedit'){document.querySelector('[data-a="savegoal"]').click()}
+});
+render();
+</script>
